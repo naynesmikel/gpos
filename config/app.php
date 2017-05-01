@@ -163,12 +163,14 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
-        Laracasts\Flash\FlashServiceProvider::class,
-        Milon\Barcode\BarcodeServiceProvider::class,
 
         /*
          * Package Service Providers...
          */
+        Laracasts\Flash\FlashServiceProvider::class,
+        Milon\Barcode\BarcodeServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
+        ConsoleTVs\Charts\ChartsServiceProvider::class,
 
         //
 
@@ -229,7 +231,9 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
-		'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
+    		'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
+    		'PDF' => Barryvdh\DomPDF\Facade::class,
+        'Charts' => ConsoleTVs\Charts\Facades\Charts::class,
 
     ],
 

@@ -5,7 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Order;
 use App\Product;
+use App\Company;
 use Auth;
+use PDF;
+use DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Input;
 
 class OrdersController extends Controller
 {
@@ -16,8 +21,17 @@ class OrdersController extends Controller
      */
     public function index()
     {
-        $orders = Order::all();
-        return $orders;
+        $orders = Order::orderBy('date_sold', 'DESC')->paginate(20);
+        $productlink = "/orders/byproductname";
+        $quantitylink = "/orders/byquantity";
+        $sellingpricelink = "/orders/bysellingprice";
+        $subtotallink = "/orders/bysubtotal";
+        $discountlink = "/orders/bydiscount";
+        $totalamountlink = "/orders/bytotalamount";
+        $datesoldlink = "/orders/bydatesold";
+        $soldbylink = "/orders/bysoldby";
+
+        return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
     }
 
     /**
@@ -27,25 +41,10 @@ class OrdersController extends Controller
      */
     public function create()
     {
-		$products = Product::all();
-		
-        return view('orders.create')
-			->with('products', $products);
+		    $products = Product::all()->sortBy('product_name');
+
+        return view('orders.create')->with('products', $products);
     }
-    
-    /*public function changeValues(Request $request){
-		if ( !empty( $request->input( 'selling_price' ) ) ) {
-
-			$selling_price = $request->input( 'selling_price' );
-			$selling_price = preg_replace( '/\s+/m', ',', $emails );
-			$emails = explode( ',', $emails );
-
-			// THIS IS KEY!
-			// Replacing the old input string with
-			// with an array of emails.
-			$request->merge( array( 'emails' => $emails ) );
-		}
-	}*/
 
     /**
      * Store a newly created resource in storage.
@@ -55,23 +54,279 @@ class OrdersController extends Controller
      */
     public function store(Request $request)
     {
-        Order::create($request->all());
-        
-        /*$products = Product::all();
-        $orderdetails = OrderDetail::where('order_id', $order->id)->get();
-		$orderby = Order::where('id', $order->id)->get();
-		return view('orders.index')->with('orders', $orderdetails)->with('products', $products)->with('orderby', $orderby);
-		
-		for($i = 0; $i < $request->counter; $i++){
-			$order = new Order;
-			$order->user_id = Auth::user()->id;
-			$order->product_name = $request->product_name;
-			$order->
-		}*/
-        
-        flash('Your order has been saved in the database!', 'success');
-        
-        return redirect('/orders/create');
+        $input = Input::all();
+    		$cust_name = Input::get('customer_name');
+    		$company = Company::all();
+    		$user = Auth::user()->name;
+        $total = 0;
+
+        for($i = 0; $i < count($input['product_name']); $i++){
+      			$order = new Order;
+      			$order->name = Auth::user()->name;
+            $order->price_bought = $input['price_bought'][$i];
+      			$order->product_name = $input['product_name'][$i];
+      			$order->quantity = $input['quantity'][$i];
+      			$order->selling_price = $input['selling_price'][$i];
+            $order->subtotal = $input['subtotal'][$i];
+      			$order->discount = $input['discount'][$i];
+      			$order->total_amount = $input['total_amount'][$i];
+      			$order->date_sold = $input['date_sold'][$i];
+      			$order->save();
+      			$total += $input['total_amount'][$i];
+
+      			$product = Product::findOrFail($input['product_id'][$i]);
+      			$product->quantity = $product->quantity - $input['quantity'][$i];
+      			$product->save();
+
+      			if($product->quantity == 0){
+              flash('Item' . strtoupper($product->product_name) . ' has became out of stock! Item has been removed from the inventory.', 'warning');
+      			  $product->delete();
+            }
+    		}
+
+    		$pdf = PDF::loadView('orders.generateReceipt', compact(['input', 'total', 'user', 'company']));
+    		return $pdf->stream(date('Y-m-d H:i:s').'_'.$cust_name.'.pdf');
+    }
+
+    public function byproductname()
+    {
+      $orders = Order::orderBy('product_name', 'ASC')->paginate(20);
+      $productlink = "/orders/byproductnamedesc";
+      $quantitylink = "/orders/byquantitydesc";
+      $sellingpricelink = "/orders/bysellingpricedesc";
+      $subtotallink = "/orders/bysubtotaldesc";
+      $discountlink = "/orders/bydiscountdesc";
+      $totalamountlink = "/orders/bytotalamountdesc";
+      $datesoldlink = "/orders/bydatesolddesc";
+      $soldbylink = "/orders/bysoldbydesc";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function byproductnamedesc()
+    {
+      $orders = Order::orderBy('product_name', 'DESC')->paginate(20);
+      $productlink = "/orders/byproductname";
+      $quantitylink = "/orders/byquantity";
+      $sellingpricelink = "/orders/bysellingprice";
+      $subtotallink = "/orders/bysubtotal";
+      $discountlink = "/orders/bydiscount";
+      $totalamountlink = "/orders/bytotalamount";
+      $datesoldlink = "/orders/bydatesold";
+      $soldbylink = "/orders/bysoldby";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function byquantity()
+    {
+      $orders = Order::orderBy('quantity', 'ASC')->paginate(20);
+      $productlink = "/orders/byproductnamedesc";
+      $quantitylink = "/orders/byquantitydesc";
+      $sellingpricelink = "/orders/bysellingpricedesc";
+      $subtotallink = "/orders/bysubtotaldesc";
+      $discountlink = "/orders/bydiscountdesc";
+      $totalamountlink = "/orders/bytotalamountdesc";
+      $datesoldlink = "/orders/bydatesolddesc";
+      $soldbylink = "/orders/bysoldbydesc";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function byquantitydesc()
+    {
+      $orders = Order::orderBy('quantity', 'DESC')->paginate(20);
+      $productlink = "/orders/byproductname";
+      $quantitylink = "/orders/byquantity";
+      $sellingpricelink = "/orders/bysellingprice";
+      $subtotallink = "/orders/bysubtotal";
+      $discountlink = "/orders/bydiscount";
+      $totalamountlink = "/orders/bytotalamount";
+      $datesoldlink = "/orders/bydatesold";
+      $soldbylink = "/orders/bysoldby";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bysellingprice()
+    {
+      $orders = Order::orderBy('selling_price', 'ASC')->paginate(20);
+      $productlink = "/orders/byproductnamedesc";
+      $quantitylink = "/orders/byquantitydesc";
+      $sellingpricelink = "/orders/bysellingpricedesc";
+      $subtotallink = "/orders/bysubtotaldesc";
+      $discountlink = "/orders/bydiscountdesc";
+      $totalamountlink = "/orders/bytotalamountdesc";
+      $datesoldlink = "/orders/bydatesolddesc";
+      $soldbylink = "/orders/bysoldbydesc";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bysellingpricedesc()
+    {
+      $orders = Order::orderBy('selling_price', 'DESC')->paginate(20);
+      $productlink = "/orders/byproductname";
+      $quantitylink = "/orders/byquantity";
+      $sellingpricelink = "/orders/bysellingprice";
+      $subtotallink = "/orders/bysubtotal";
+      $discountlink = "/orders/bydiscount";
+      $totalamountlink = "/orders/bytotalamount";
+      $datesoldlink = "/orders/bydatesold";
+      $soldbylink = "/orders/bysoldby";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+
+    public function bysubtotal()
+    {
+      $orders = Order::orderBy('subtotal', 'ASC')->paginate(20);
+      $productlink = "/orders/byproductnamedesc";
+      $quantitylink = "/orders/byquantitydesc";
+      $sellingpricelink = "/orders/bysellingpricedesc";
+      $subtotallink = "/orders/bysubtotaldesc";
+      $discountlink = "/orders/bydiscountdesc";
+      $totalamountlink = "/orders/bytotalamountdesc";
+      $datesoldlink = "/orders/bydatesolddesc";
+      $soldbylink = "/orders/bysoldbydesc";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bysubtotaldesc()
+    {
+      $orders = Order::orderBy('subtotal', 'DESC')->paginate(20);
+      $productlink = "/orders/byproductname";
+      $quantitylink = "/orders/byquantity";
+      $sellingpricelink = "/orders/bysellingprice";
+      $subtotallink = "/orders/bysubtotal";
+      $discountlink = "/orders/bydiscount";
+      $totalamountlink = "/orders/bytotalamount";
+      $datesoldlink = "/orders/bydatesold";
+      $soldbylink = "/orders/bysoldby";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bytotalamount()
+    {
+      $orders = Order::orderBy('total_amount', 'ASC')->paginate(20);
+      $productlink = "/orders/byproductnamedesc";
+      $quantitylink = "/orders/byquantitydesc";
+      $sellingpricelink = "/orders/bysellingpricedesc";
+      $subtotallink = "/orders/bysubtotaldesc";
+      $discountlink = "/orders/bydiscountdesc";
+      $totalamountlink = "/orders/bytotalamountdesc";
+      $datesoldlink = "/orders/bydatesolddesc";
+      $soldbylink = "/orders/bysoldbydesc";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bytotalamountdesc()
+    {
+      $orders = Order::orderBy('total_amount', 'DESC')->paginate(20);
+      $productlink = "/orders/byproductname";
+      $quantitylink = "/orders/byquantity";
+      $sellingpricelink = "/orders/bysellingprice";
+      $subtotallink = "/orders/bysubtotal";
+      $discountlink = "/orders/bydiscount";
+      $totalamountlink = "/orders/bytotalamount";
+      $datesoldlink = "/orders/bydatesold";
+      $soldbylink = "/orders/bysoldby";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bydiscount()
+    {
+      $orders = Order::orderBy('discount', 'ASC')->paginate(20);
+      $productlink = "/orders/byproductnamedesc";
+      $quantitylink = "/orders/byquantitydesc";
+      $sellingpricelink = "/orders/bysellingpricedesc";
+      $subtotallink = "/orders/bysubtotaldesc";
+      $discountlink = "/orders/bydiscountdesc";
+      $totalamountlink = "/orders/bytotalamountdesc";
+      $datesoldlink = "/orders/bydatesolddesc";
+      $soldbylink = "/orders/bysoldbydesc";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bydiscountdesc()
+    {
+      $orders = Order::orderBy('discount', 'DESC')->paginate(20);
+      $productlink = "/orders/byproductname";
+      $quantitylink = "/orders/byquantity";
+      $sellingpricelink = "/orders/bysellingprice";
+      $subtotallink = "/orders/bysubtotal";
+      $discountlink = "/orders/bydiscount";
+      $totalamountlink = "/orders/bytotalamount";
+      $datesoldlink = "/orders/bydatesold";
+      $soldbylink = "/orders/bysoldby";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bydatesold()
+    {
+      $orders = Order::orderBy('date_sold', 'ASC')->paginate(20);
+      $productlink = "/orders/byproductnamedesc";
+      $quantitylink = "/orders/byquantitydesc";
+      $sellingpricelink = "/orders/bysellingpricedesc";
+      $subtotallink = "/orders/bysubtotaldesc";
+      $discountlink = "/orders/bydiscountdesc";
+      $totalamountlink = "/orders/bytotalamountdesc";
+      $datesoldlink = "/orders/bydatesolddesc";
+      $soldbylink = "/orders/bysoldbydesc";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bydatesolddesc()
+    {
+      $orders = Order::orderBy('date_sold', 'DESC')->paginate(20);
+      $productlink = "/orders/byproductname";
+      $quantitylink = "/orders/byquantity";
+      $sellingpricelink = "/orders/bysellingprice";
+      $subtotallink = "/orders/bysubtotal";
+      $discountlink = "/orders/bydiscount";
+      $totalamountlink = "/orders/bytotalamount";
+      $datesoldlink = "/orders/bydatesold";
+      $soldbylink = "/orders/bysoldby";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bysoldby()
+    {
+      $orders = Order::orderBy('name', 'ASC')->paginate(20);
+      $productlink = "/orders/byproductnamedesc";
+      $quantitylink = "/orders/byquantitydesc";
+      $sellingpricelink = "/orders/bysellingpricedesc";
+      $subtotallink = "/orders/bysubtotaldesc";
+      $discountlink = "/orders/bydiscountdesc";
+      $totalamountlink = "/orders/bytotalamountdesc";
+      $datesoldlink = "/orders/bydatesolddesc";
+      $soldbylink = "/orders/bysoldbydesc";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
+    }
+
+    public function bysoldbydesc()
+    {
+      $orders = Order::orderBy('name', 'DESC')->paginate(20);
+      $productlink = "/orders/byproductname";
+      $quantitylink = "/orders/byquantity";
+      $sellingpricelink = "/orders/bysellingprice";
+      $subtotallink = "/orders/bysubtotal";
+      $discountlink = "/orders/bydiscount";
+      $totalamountlink = "/orders/bytotalamount";
+      $datesoldlink = "/orders/bydatesold";
+      $soldbylink = "/orders/bysoldby";
+
+      return view('orders.index', compact(['orders', 'productlink', 'quantitylink', 'sellingpricelink', 'subtotallink', 'discountlink', 'totalamountlink', 'datesoldlink', 'soldbylink']));
     }
 
     /**

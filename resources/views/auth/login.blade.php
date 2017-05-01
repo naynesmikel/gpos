@@ -1,6 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+body{
+  vertical-align: middle;
+}
+.container {
+  position: relative;
+  z-index: 2;
+}
+
+body:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    background-image: url('http://111wallpapers.com/wp-content/uploads/2016/12/laptop-Business-Analytics-Wallpaper-1080p.jpg');
+    opacity: 1;
+}
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
