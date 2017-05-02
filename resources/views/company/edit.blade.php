@@ -19,7 +19,7 @@
     <label for="company_slogan" class="col-md-4 control-label">Company Slogan</label>
     <div class="col-md-6">
       <textarea cols="40" rows="5" id="company_slogan" type="text" class="form-control" name="company_slogan" value="{{ $company{0}->company_slogan }}" autofocus>{{ $company{0}->company_slogan }}</textarea>
-
+			<center><small style="color: gray;"><i>Optional</i></small></center>
       @if ($errors->has('company_slogan'))
         <span class="help-block">
           <strong>{{ $errors->first('company_slogan') }}</strong>

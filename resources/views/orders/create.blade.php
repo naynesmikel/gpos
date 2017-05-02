@@ -67,7 +67,6 @@
 					});
 				}
 			});
-			console.log(selecteditems);
 
 			$('#cash_out').val((($('#cash_in').val()-0) - ($('.total').html()-0)).toFixed(2));
 			var emptyProducts = $(".product_name option:selected[value='select product']").length;
