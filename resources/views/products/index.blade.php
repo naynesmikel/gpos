@@ -9,6 +9,14 @@
 		$(document.body).on('hidden.bs.modal', function () {
 		  $('body').css('padding-right','0');
 		});
+		$('#barcode').val(Math.floor(Math.random() * 8999999 + 1000000));
+		$(".delbtn").click(function(){
+		  if(confirm("Are you sure you want to delete this?")){
+				$(".delbtn").attr("href", "query.php?ACTION=delete&ID='1'");
+		  }else{
+				return false;
+		  }
+		});
 	});
 </script>
 
@@ -16,9 +24,6 @@
 	.panel-heading {
 		padding: 15px;
 		line-height:30px;
-	}
-	#addproduct {
-		vertical-align: middle;
 	}
 </style>
 
@@ -29,9 +34,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					Inventory
-					@if(Auth::user()->admin)
-					<a class="btn btn-primary pull-right" href="/products/create">Add New Product</a>
-					@endif
+					<button type="button" class="btn btn-primary btn-sm actions pull-right" data-toggle="modal" data-target="#addproduct">Add New Product</button>
 				</div>
 
 				<div class="panel-body">
@@ -63,13 +66,14 @@
 										<td>{{$product->date_bought->toFormattedDateString()}}</td>
 										<td>
 											@if(Auth::user()->admin)
-											<a href="/products/{{$product->id}}/edit" class="btn btn-default btn-sm actions">edit</a>
+											<!--a href="/products/{{$product->id}}/edit" class="btn btn-default btn-sm actions">edit</a-->
+											<button type="button" class="btn btn-default btn-sm actions" data-toggle="modal" data-target="#edit{{$product->id}}">edit</button>
 											@endif
 
 											@if(Auth::user()->admin)
-											<button type="button" class="btn btn-success btn-sm actions" data-toggle="modal" data-target="#{{$product->id}}" id="addproduct" style="margin-left: 20px;">stock item</button>
+											<button type="button" class="btn btn-success btn-sm actions" data-toggle="modal" data-target="#{{$product->id}}" style="margin-left: 20px;">stock item</button>
 											@else
-											<button type="button" class="btn btn-success btn-sm actions" data-toggle="modal" data-target="#{{$product->id}}" id="addproduct">stock item</button>
+											<button type="button" class="btn btn-success btn-sm actions" data-toggle="modal" data-target="#{{$product->id}}">stock item</button>
 											@endif
 
 											@if(Auth::user()->admin)
@@ -104,30 +108,11 @@
 				        <button type="button" class="close" data-dismiss="modal">&times;</button>
 				        <h4 class="modal-title">Stock Item</h4>
 				      </div>
-				      <div class="modal-body" style="padding: 40px;">
-								<p><small style="color: gray;">Increase the number of items on an existing product.</small></p>
-								<form class="form-horizontal" role="form" method="POST" action="/products/additem">
-									{{ csrf_field() }}
-									<table class="table">
-										<thead>
-											<th>Product Name</th>
-											<th>Quantity</th>
-										</thead>
-										<tbody>
-											<tr>
-												<input type="hidden" name="product_id" class="product_id" id="product_id" value="{{$product->id}}">
-												<td>
-													{{ $product->product_name }}
-												</td>
-												<td>
-													<input id="quantity" type="number" min="1" max="2147483647" class="form-control quantity" name="quantity" value="1" required>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-									<input type="submit" class="btn btn-success pull-right">
-								</form>
+
+				      <div class="modal-body">
+								@include('products/stockItem')
 				      </div>
+
 				      <div class="modal-footer">
 				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 				      </div>
@@ -135,12 +120,58 @@
 
 				  </div>
 				</div>
+
+				<div id="edit{{$product->id}}" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Edit Product</h4>
+							</div>
+
+							<div class="modal-body">
+								@include('products/edit')
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
 				@endforeach
+
 				@else
 					<div class="panel-body">
-						No items yet
+						<center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+							<br>
+							You have not bought any items yet.
+						</center>
 					</div>
 				@endif
+
+				<div id="addproduct" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Add Product</h4>
+							</div>
+
+							<div class="modal-body">
+								@include('products/create')
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

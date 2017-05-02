@@ -1,10 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+<script>
+	$(document).ready(function(){
+		$(".delbtn").click(function(){
+			if(confirm("Are you sure you want to delete this?")){
+				$(".delbtn").attr("href", "query.php?ACTION=delete&ID='1'");
+			}else{
+				return false;
+			}
+		});
+	});
+</script>
+
 <div class="container">
 	@include('flash::message')
 	<div class="row">
-		<div class="col-md-10 col-md-offset-1">
+		<div class="col-md-12">
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3>Total number of employees: {{ $users->total() }}</h3>
@@ -37,7 +49,7 @@
 											{{ csrf_field() }}
 
 											{{ method_field('DELETE') }}
-											<small><button class="btn btn-danger btn-sm actions">delete</button></small>
+											<small><button class="btn btn-danger btn-sm actions delbtn">delete</button></small>
 										</form>
 									</td>
 								</tr>
@@ -54,7 +66,10 @@
 				@else
 				<div class="panel-body">
 					<div class="panel-body">
-						You have no employees.
+						<center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+							<br>
+							You have no employees.
+						</center>
 					</div>
 				</div>
 				@endif

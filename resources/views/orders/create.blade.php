@@ -24,11 +24,11 @@
 			tr += "<input type='hidden' name='product_id[]' class='product_id' value=''>";
 			tr += "<td class='col-md-3'>";
 			tr += "<select class='form-control product_name' id='product_name' name='product_name[]' required>";
-			tr += "<option></option>";
+			tr += "<option value='select product'>select product</option>";
 			tr += "@forelse($products as $product)";
 			tr += "<option data-id='{{ $product->id }}' data-price='{{ $product->selling_price }}' data-qty='{{ $product->quantity }}' data-pricebought='{{ $product->price_bought }}'>{{ $product->product_name }}</option>";
 			tr += "@empty";
-			tr += "<option>----</option>";
+			tr += "<option value='----'>----</option>";
 			tr += "@endforelse";
 			tr += "</select>";
 			tr += "</td>";
@@ -58,7 +58,7 @@
 
 			$('.product_name').each(function(i,e){
 				var item = $(this).val();
-				if(item != ""){
+				if(item != "select product" && item != "----"){
 					selecteditems.push(item);
 					$('#place_order').children().last().find('.product_name option').each(function() {
 				    if ( $(this).val() == item ) {
@@ -67,11 +67,25 @@
 					});
 				}
 			});
+			console.log(selecteditems);
+
+			$('#cash_out').val((($('#cash_in').val()-0) - ($('.total').html()-0)).toFixed(2));
+			var emptyProducts = $(".product_name option:selected[value='select product']").length;
+			var emptyDash = $(".product_name option:selected[value='----']").length;
+
+			if($('#cash_out').val()-0 < 0 || emptyProducts > 0 || emptyDash > 0){
+				$("#submit").attr("disabled", true);
+			}else
+				$("#submit").removeAttr("disabled");
+
 		});
 		$('#place_order').delegate('.delete', 'click', function () {
 			if($('#place_order tr').length != 1){
 				var deleteditem = $(this).parent().parent().parent().find('.product_name option:selected').val();
-				selecteditems.splice(selecteditems.indexOf(deleteditem), 1);
+
+				if(deleteditem != "select product" && deleteditem != "----"){
+					selecteditems.splice(selecteditems.indexOf(deleteditem), 1);
+				}
 
 				$(this).parent().parent().parent().remove();
 				$('#counter').val(($('#counter').val()-0)-1);
@@ -83,9 +97,10 @@
 				});
 
 				var temp = selecteditems;
+				k = 0;
 				$('.product_name').each(function(i,e){
 					for(var j=0; j<temp.length; j++){
-						if(j != i){
+						if($(this).val() != temp[j]){
 							$('option', this).each(function() {
 						    if ( $(this).val() == temp[j] ) {
 						    	$(this).hide();
@@ -93,10 +108,22 @@
 							});
 						}
 					}
-					$(this).val(temp[i]).change();
+					if($(this).val() != "select product" && $(this).val() != "----"){
+						$(this).val(temp[k]).change();
+						k++;
+					}
 				});
 
 				totalAmount();
+
+				$('#cash_out').val((($('#cash_in').val()-0) - ($('.total').html()-0)).toFixed(2));
+				var emptyProducts = $(".product_name option:selected[value='select product']").length;
+				var emptyDash = $(".product_name option:selected[value='----']").length;
+
+				if($('#cash_out').val()-0 > 0 && emptyProducts == 0 && emptyDash == 0){
+					$("#submit").removeAttr("disabled");
+				}
+
 			}else{
 				alert("You cannot have no items in an order");
 			}
@@ -104,7 +131,7 @@
 		$('#place_order').delegate('.product_name', 'change', function () {
 			var tr = $(this).parent().parent();
 
-			if(tr.find('.product_name option:selected').val() == ""){
+			if(tr.find('.product_name option:selected').val() == "select product" || tr.find('.product_name option:selected').val() == "----"){
 				tr.find('.product_id').attr('value', "");
 				tr.find('.price_bought').attr('value', "");
 				tr.find('.selling_price').attr('value', "");
@@ -118,7 +145,8 @@
 				selecteditems = [];
 				$('.product_name').each(function(i,e){
 					var item = $(this).val();
-					if(item != ""){
+
+					if(item != "select product" && item != "----"){
 						selecteditems.push(item);
 					}
 				});
@@ -129,10 +157,16 @@
 					});
 				});
 
+				tr.find('.product_name option').each(function() {
+					if($(this).val() == "select product"){
+						$(this).remove();
+					}
+				});
+
 				var temp = selecteditems;
 				$('.product_name').each(function(i,e){
 					for(var j=0; j<temp.length; j++){
-						if(j != i){
+						if($(this).val() != temp[j]){
 							$('option', this).each(function() {
 						    if ( $(this).val() == temp[j] ) {
 						    	$(this).hide();
@@ -148,11 +182,15 @@
 				var datapricebought = tr.find('.product_name option:selected').attr('data-pricebought');
 
 				tr.find('.product_id').attr('value', dataid);
-				tr.find('.price_bought').attr('value', datapricebought);
-				tr.find('.selling_price').attr('value', dataprice);
-				tr.find('.quantity').attr('max', dataqty);
+				tr.find('.price_bought').attr('value', datapricebought - 0);
+				tr.find('.selling_price').attr('value', dataprice - 0);
+				tr.find('.quantity').attr('max', dataqty - 0);
 				if(tr.find('.quantity').val() == ""){
 					tr.find('.quantity').val(1);
+				}else{
+					if(tr.find('.quantity').val() > dataqty){
+						tr.find('.quantity').val(dataqty);
+					}
 				}
 				if(tr.find('.discount').val() == ""){
 					tr.find('.discount').val(0);
@@ -163,14 +201,24 @@
 				var price = tr.find('.selling_price').val() - 0;
 
 				var subtotal = qty * price;
+				qty * (price - discount/100)
 				var total = subtotal - ((qty * price * discount)/100);
 				tr.find('.subtotal').val(subtotal);
 				tr.find('.total_amount').val(total);
 
 				tr.find('.quantity').attr('readonly', false);
 				tr.find('.discount').attr('readonly', false);
+
+				$('#cash_out').val((($('#cash_in').val()-0) - ($('.total').html()-0)).toFixed(2));
+				var emptyProducts = $(".product_name option:selected[value='select product']").length;
+				var emptyDash = $(".product_name option:selected[value='----']").length;
+
+				if($('#cash_out').val()-0 > 0 && emptyProducts == 0 && emptyDash == 0){
+					$("#submit").removeAttr("disabled");
+				}
 			}
-			totalAmount();
+			if(tr.find('.product_name option:selected').val() != "----")
+				totalAmount();
 		});
 		$('#place_order').delegate('.quantity', 'change', function () {
 			var tr = $(this).parent().parent();
@@ -208,15 +256,25 @@
 		});
 		$('#cash_in').change(function() {
 			$('#cash_out').val((($('#cash_in').val()-0) - ($('.total').html()-0)).toFixed(2));
+			var emptyProducts = $(".product_name option:selected[value='select product']").length;
+			var emptyDash = $(".product_name option:selected[value='----']").length;
+
 			if($('#cash_out').val()-0 < 0){
 				$("#submit").attr("disabled", true);
 				alert("Cash tendered is less than the total price of the order/s.");
+			}else if(emptyProducts > 0 || emptyDash > 0){
+				$("#submit").attr("disabled", true);
+				alert("Please select a product on each row or delete them.");
 			}else
 				$("#submit").removeAttr("disabled");
+
+			totalAmount();
 		});
 		$('#submit').mousedown(function() {
 	    var emptyProducts = $(this).parent().find($('select')).filter(function() { return $(this).val() == ""; });
 			var emptyCash = $(this).parent().find('input[type="number"]').filter(function() { return $(this).val() == ""; });
+			var emptyDash = $(".product_name option:selected[value='----']").length;
+
 	    if (emptyProducts.length || emptyCash.length) {
 					$("#submit").removeAttr("data-toggle");
 					$("#submit").removeAttr("data-target");
@@ -263,6 +321,7 @@
 
 										<div class="col-md-7">
 											<input id="customer_name" type="text" class="form-control" name="customer_name" value="{{ old('customer_name') }}" autofocus>
+											<p><small style="color: gray;"><i>Optional</i></small></p>
 										</div>
 									</div>
 								</td>
@@ -272,11 +331,12 @@
 
 										<div class="col-md-10">
 											<input id="location" type="text" class="form-control" name="location" value="{{ old('location') }}">
+											<p><small style="color: gray;"><i>Optional</i></small></p>
 										</div>
 									</div>
 								</td>
 							</tr>
-                        </table>
+						</table>
 
 						<table class="table">
 							<thead>
@@ -298,11 +358,11 @@
 
 									<td class="col-md-3">
 											<select class="form-control product_name" id="product_name" name="product_name[]" required>
-													<option></option>
+													<option value="select product">select product</option>
 													@forelse($products as $product)
 													<option data-id="{{ $product->id }}" data-price="{{ $product->selling_price }}" data-qty="{{ $product->quantity }}" data-pricebought="{{ $product->price_bought }}">{{ $product->product_name }}</option>
 													@empty
-													<option>----</option>
+													<option value='----'>----</option>
 													@endforelse
 											</select>
 									</td>
@@ -352,32 +412,32 @@
 						<hr>
 
 						<div class="form-group{{ $errors->has('cash_in') ? ' has-error' : '' }}">
-                            <label for="cash_in" class="col-md-4 control-label">Cash</label>
+              <label for="cash_in" class="col-md-4 control-label">Cash</label>
 
-                            <div class="col-md-4">
-                                <input id="cash_in" type="number" min="0" class="form-control" name="cash_in" value="" required autofocus>
+              <div class="col-md-4">
+                <input id="cash_in" type="number" min="0" class="form-control" name="cash_in" value="" required autofocus>
 
-                                @if ($errors->has('cash_in'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('cash_in') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                @if ($errors->has('cash_in'))
+                  <span class="help-block">
+                    <strong>{{ $errors->first('cash_in') }}</strong>
+                  </span>
+                @endif
+              </div>
+            </div>
 
-                        <div class="form-group{{ $errors->has('cash_out') ? ' has-error' : '' }}">
-                            <label for="cash_out" class="col-md-4 control-label">Change</label>
+            <div class="form-group{{ $errors->has('cash_out') ? ' has-error' : '' }}">
+              <label for="cash_out" class="col-md-4 control-label">Change</label>
 
-                            <div class="col-md-4">
-                                <input id="cash_out" type="text" class="form-control" name="cash_out" value="0" required autofocus readonly>
+              <div class="col-md-4">
+                <input id="cash_out" type="text" class="form-control" name="cash_out" value="0.00" required autofocus readonly>
 
-                                @if ($errors->has('cash_out'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('cash_out') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
+                @if ($errors->has('cash_out'))
+                  <span class="help-block">
+                    <strong>{{ $errors->first('cash_out') }}</strong>
+                  </span>
+                @endif
+              </div>
+            </div>
 
 						<input id="submit" type="submit" class="btn btn-success pull-right" value="Done" disabled>
 					</form>
@@ -395,26 +455,21 @@
 					<p>When you are <b>Done</b> with your orders, the system will automatically generate a receipt that you can print out. The order will be also saved in the <b>Orders Log</b>.</p>
 					<p>Just click <b>Continue</b> on the pop-up window that will appear to create another order.</p>
 					<hr>
-					<!--a href="{{ route('generateReceipt',['download'=>'pdf']) }}">Generate</a-->
 				</div>
 			</div>
 		</div>
 
-				<!-- Modal -->
 		<div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" autofocus>
 		  <div class="modal-dialog">
 
-		    <!-- Modal content-->
 		    <div class="modal-content">
 		      <div class="modal-header">
-		        <!--button type="button" class="close" data-dismiss="modal">&times;</button-->
 		        <h4 class="modal-title">Place Order</h4>
 		      </div>
 		      <div class="modal-body">
 		        <center>Your customer's order has been saved. Please continue.</center>
 		      </div>
 		      <div class="modal-footer">
-		        <!--button type="button" class="btn btn-default" data-dismiss="modal">Close</button-->
 						<a href="/orders/create" id="continue-link">Continue</a>
 		      </div>
 		    </div>

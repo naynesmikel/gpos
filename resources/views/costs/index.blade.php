@@ -254,6 +254,7 @@
         //computes average check, revenue, gross income, and gross margin per month
         //also adds the fixed cost in each month
         var cost = {!! json_encode($costs->toArray()) !!};
+        var soi = 0;
         $('.week-navigation').each(function(i,e){
           var revenue = 0;
           var grossincome = 0;
@@ -274,7 +275,7 @@
           for(var i = 0; i < cost.length; i++){
             if($(this).attr('id').length == 6){
               if(cost[i].year == $(this).attr('id').substring(0,4) && cost[i].month == $(this).attr('id').substring(4,6)){
-                $(this).find('.editcost').attr('href', '/costs/' + cost[i].id + '/edit');
+                $(this).find('.editcost').attr('data-target', '#' + cost[i].id);
                 //$(this).find('.tax').append(cost[i].tax + "%");
                 $(this).find('.water_bill').append(cost[i].water_bill.toFixed(2));
                 $(this).find('.electric_bill').append(cost[i].electric_bill.toFixed(2));
@@ -282,14 +283,15 @@
                 $(this).find('.labor').append(cost[i].labor.toFixed(2));
                 $(this).find('.fixedcosttotal').append((cost[i].water_bill + cost[i].electric_bill + cost[i].rent + cost[i].labor).toFixed(2));
                 var netincome = grossincome - (cost[i].water_bill + cost[i].electric_bill + cost[i].rent + cost[i].labor);
-                netincome = netincome - (netincome * cost[i].tax);
+                netincome = netincome - (netincome * (cost[i].tax/100));
+                soi += netincome;
                 $(this).find('.month-netincome').append("<strong>" + netincome.toFixed(2) + "</strong>");
                 $(this).find('.month-netincome').css("color", getColorThresh(netincome));
                 break;
               }
             }else{
               if(cost[i].year == $(this).attr('id').substring(0,4) && cost[i].month.substring(1,2) == $(this).attr('id').substring(4,5)){
-                $(this).find('.editcost').attr('href', '/costs/' + cost[i].id + '/edit');
+                $(this).find('.editcost').attr('data-target', '#' + cost[i].id);
                 //$(this).find('.tax').append(cost[i].tax + "%");
                 $(this).find('.water_bill').append(cost[i].water_bill.toFixed(2));
                 $(this).find('.electric_bill').append(cost[i].electric_bill.toFixed(2));
@@ -297,7 +299,8 @@
                 $(this).find('.labor').append(cost[i].labor.toFixed(2));
                 $(this).find('.fixedcosttotal').append((cost[i].water_bill + cost[i].electric_bill + cost[i].rent + cost[i].labor).toFixed(2));
                 var netincome = grossincome - (cost[i].water_bill + cost[i].electric_bill + cost[i].rent + cost[i].labor);
-                netincome = netincome - (netincome * cost[i].tax);
+                netincome = netincome - (netincome * (cost[i].tax/100));
+                soi += netincome;
                 $(this).find('.month-netincome').append("<strong>" + netincome.toFixed(2) + "</strong>");
                 $(this).find('.month-netincome').css("color", getColorThresh(netincome));
                 break;
@@ -305,13 +308,16 @@
             }
           }
           var mon = $(this).find('.week-date').html().substring(6, 9);
-          $(this).find('.monthof').append(getFullMonth(mon) + " " + $(this).attr('id').substring(0,4));
+          $(this).find('.monthof').append("Month of " + getFullMonth(mon) + " " + $(this).attr('id').substring(0,4));
         });
 
         $('#net-sales').append("<strong>" + netsales.toFixed(2) + "</strong>");
         $('#net-sales').css("color", getColorThresh(netsales));
         $('#gross-sales').append("<strong>" + grosssales.toFixed(2) + "</strong>");
         $('#gross-sales').css("color", getColorThresh(grosssales));
+        $('#soi').append("<strong>" + soi.toFixed(2) + "</strong>");
+        $('#soi').css("color", getColorThresh(soi));
+
     });
 </script>
 
@@ -380,7 +386,7 @@
                               <tr>
                                 <th>Product Name</th>
                                 <th>Quantity</th>
-                                <th>Selling Price</th>
+                                <th>Price</th>
                                 <th>Sub Total</th>
                                 <th>Discount (%)</th>
                                 <th>Total Amount</th>
@@ -419,7 +425,7 @@
                   <br>
                 @endfor
                 <hr>
-                <center><h4>{{ $month[$j][0]->toFormattedDateString() }} to {{ $month[$j][count($month[$j])-1]->toFormattedDateString() }}</h4></center>
+                <center><h4>Week of {{ $month[$j][0]->toFormattedDateString() }} to {{ $month[$j][count($month[$j])-1]->toFormattedDateString() }}</h4></center>
                 <br>
                 <div class="row">
                   <div class="col-md-2">
@@ -454,7 +460,12 @@
                 <p class="month-grossincome">Gross Income: </p>
                 <p class="month-grossmargin">Gross Margin: </p>
                 <br>
-                <p><b>Fixed Cost</b> <big class="actions"><a href="" data-toggle="tooltip" title="Edit Fixed Cost for this month" class="editcost"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></big></p>
+                <p>
+                  <b>Fixed Cost</b>
+                  <span data-toggle="modal" data-target="" class="editcost">
+        						<big><a href="#" data-toggle="tooltip" title="Edit Fixed Cost for this month" class="actions"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></big>
+        					</span>
+                </p>
                 <!--p class="tax"> Tax: </p-->
                 <p class="water_bill">Water Bill: </p>
                 <p class="electric_bill">Electric Bill: </p>
@@ -568,19 +579,45 @@
           <p id="gross-sales">Gross Sales: </p>
           <p id="net-sales">Net Sales: </p>
           <hr>
-          <!--p><b>Sales Operating Income:</b></p-->
+          <p id="soi">Sales Operating Income: </p>
 
 				</div>
         @else
           <div class="panel-body">
   					<div class="panel-body">
-  						You not made any sales yet.
+  						<center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                <br>
+                You have not made any sales yet.
+              </center>
   					</div>
           </div>
 				@endif
 
 			</div>
 		</div>
+
+    @foreach($costs as $cost)
+    <div id="{{$cost->id}}" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Edit Fixed Cost</h4>
+          </div>
+
+          <div class="modal-body">
+            @include('costs/edit')
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    @endforeach
 
     @if(!$orders->isEmpty())
     <div class="col-md-12">

@@ -52,7 +52,10 @@
 				</div>
 				@else
 				<div class="panel-body">
-					You not made any sales yet.
+					<center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+						<br>
+						You have not made any sales yet.
+					</center>
 				</div>
 				@endif
 			</div>

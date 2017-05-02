@@ -32,6 +32,11 @@ class User extends Authenticatable
     		'birthday', 'created_at',
     ];
 
+    public function isAdmin()
+    {
+      return $this->admin;
+    }
+
     public function setNameAttribute($value)
     {
       $this->attributes['name'] = ucwords($value);

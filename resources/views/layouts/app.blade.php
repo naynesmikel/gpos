@@ -31,11 +31,10 @@
 </head>
 <style>
     footer {
-       position:fixed;
        left:0px;
        bottom:0px;
        height:30px;
-       width:100%;
+       width:80%;
        margin-left: 50px;
     }
     .navbar {
@@ -50,8 +49,17 @@
       background-color: #e7e7e7;
     }
 
-    .navbar-default .navbar-nav .open .dropdown-menu>li>a,.navbar-default .navbar-nav .open .dropdown-menu {
+    .navbar-default .navbar-nav .open .dropdown-menu>li>a, .navbar-default .navbar-nav .open .dropdown-menu {
       color: #202020;
+    }
+
+    #logo {
+      width: 35px;
+      height: 35px;
+    }
+
+    .navbar-brand {
+      padding-top: 8px;
     }
 </style>
 <body>
@@ -84,8 +92,8 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
+                    <a class="navbar-brand" href="{{ url('/') }}" title="GPOS">
+                        <img id="logo" src="/gposlogo.png" alt="GPOS">
                     </a>
                 </div>
 
@@ -104,7 +112,7 @@
                         @else
 
               							@if(Auth::user()->admin)
-                                <li><a href="/products/createBarcode">Generate Barcodes</a></li>
+                                <li><a href="/products/createBarcode" style="display: none;">Generate Barcodes</a></li>
                                 <li><a href="/costs">Sales Report</a></li>
               							@endif
                             <li><a href="/orders">Orders Log</a></li>
@@ -145,7 +153,7 @@
 
 		@yield('content')
     </div>
-    <footer style="top:0;">
+    <footer class="footer" style="top:0;">
       @include('layouts/footer')
     </footer>
     <!-- Scripts -->

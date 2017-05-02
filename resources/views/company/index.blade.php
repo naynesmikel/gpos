@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+	.modal-dialog{
+		width: 800px;
+	}
+</style>
+
 <div class="container">
 	@include('flash::message')
 
@@ -11,7 +17,9 @@
 				<div class="panel-heading">
 					Company Details
 					@if(Auth::user()->admin)
-					<big><a href="/company/1/edit" data-toggle="tooltip" title="Edit Company Details" class="pull-right"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></big>
+					<span data-toggle="modal" data-target="#editcompany">
+						<big><a href="#" data-toggle="tooltip" title="Edit Company Details" class="pull-right"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></big>
+					</span>
 					@endif
 				</div>
 
@@ -67,6 +75,27 @@
 					<div class="row">
 						<label for="labor" class="col-md-3 control-label">Labor</label>
 						<div class="col-md-9">{{ $company{0}->labor }}</div>
+					</div>
+				</div>
+
+				<div id="editcompany" class="modal fade" role="dialog">
+					<div class="modal-dialog">
+
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Edit Company</h4>
+							</div>
+
+							<div class="modal-body">
+								@include('company/edit')
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+
 					</div>
 				</div>
 

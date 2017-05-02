@@ -28,6 +28,8 @@ body:before {
             <div class="panel panel-default">
                 <div class="panel-heading">Register</div>
                 <div class="panel-body">
+                  <center><small style="color: red;">Please only use <strong>Google Chrome</strong> as your browser.</small></center>
+                  <br>
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
                         {{ csrf_field() }}
 

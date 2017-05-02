@@ -3,24 +3,11 @@
 @section('content')
 <style>
 body{
-  vertical-align: middle;
-}
-.container {
-  position: relative;
-  z-index: 2;
+  width: 100%;
+  height: 100%;
+  background-image: url('http://111wallpapers.com/wp-content/uploads/2016/12/laptop-Business-Analytics-Wallpaper-1080p.jpg');
 }
 
-body:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
-    background-image: url('http://111wallpapers.com/wp-content/uploads/2016/12/laptop-Business-Analytics-Wallpaper-1080p.jpg');
-    opacity: 1;
-}
 </style>
 <div class="container">
     <div class="row">
@@ -28,6 +15,8 @@ body:before {
             <div class="panel panel-default">
                 <div class="panel-heading">Login</div>
                 <div class="panel-body">
+                  <center><small style="color: red;">Please only use <strong>Google Chrome</strong> as your browser.</small></center>
+                  <br>
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
                         {{ csrf_field() }}
 

@@ -79,7 +79,7 @@ class OrdersController extends Controller
       			$product->save();
 
       			if($product->quantity == 0){
-              flash('Item' . strtoupper($product->product_name) . ' has became out of stock! Item has been removed from the inventory.', 'warning');
+              flash('Item ' . strtoupper($product->product_name) . ' is now out of stock! Item ' . strtoupper($product->product_name) . ' has been removed from the inventory.', 'warning');
       			  $product->delete();
             }
     		}

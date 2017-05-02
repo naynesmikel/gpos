@@ -55,6 +55,8 @@ class CostsController extends Controller
       $costs = Cost::orderBy('year', 'month', 'ASC')->get();
       $company = Company::all();
 
+      //if(!$orders->isEmpty()){
+
       //creates an array for the years
       $years = [];
       foreach ($orders as $order) {
@@ -124,7 +126,7 @@ class CostsController extends Controller
       $costs = Cost::orderBy('year', 'month', 'ASC')->get();
 
       //creates an array of dates in a week within an array that is sorted by month and year
-      $permonth;
+      $permonth = [];
       $id = 0;
       foreach ($yearmonth as $ym) {
         $week1 = [];
@@ -226,8 +228,10 @@ class CostsController extends Controller
       $perdayinmonthlabel = [];
       $perdayinmonthlabeltemp = [];
       $j = 0;
-      $curryear = $years[$j];
-      $weekyear = $years[$j];
+      if($years != []){
+        $curryear = $years[$j];
+        $weekyear = $years[$j];
+      }
       foreach($permonth as $month){
         $weekcount = 1;
 
@@ -545,8 +549,8 @@ class CostsController extends Controller
       $productcost = [];
       $revenue = [];
       $yearcost;
-      $yeargrossincome;
-      $yeargrosssales;
+      $yeargrossincome = [];
+      $yeargrosssales = [];
       foreach($years as $year){
         $productcost[] = DB::table('orders')
           ->select('product_name', DB::raw('SUM(quantity) as quantity'), 'price_bought')
@@ -617,7 +621,7 @@ class CostsController extends Controller
           ->labels(array_column($temp_array, 'product_name'))
           ->values(array_column($temp_array, 'quantity'))
           ->elementLabel("Quantity")
-          ->dimensions(554, 400);
+          ->dimensions(0, 400);
         $chartproducts[] = $chart;
       }
 
@@ -648,6 +652,11 @@ class CostsController extends Controller
         'chartrevenueperyear', 'chartnetincomeperyear', 'chartspermonth',
         'chartweeklyrevenue', 'chartweeklygrossincome', 'chartperweek',
         'chartsperdayinweek', 'chartperdayinmonth']));
+      // }
+      // else {
+      //   $yearmonth = ["1"];
+      //   return view('costs.index', compact(['yearmonth']));
+      // }
     }
 
     public function create()
