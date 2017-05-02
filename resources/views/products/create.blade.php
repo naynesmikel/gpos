@@ -46,7 +46,7 @@
 	</div>
 
 	<div class="form-group{{ $errors->has('price_bought') ? ' has-error' : '' }}">
-    <label for="price_bought" class="col-md-4 control-label">Cost</label>
+    <label for="price_bought" class="col-md-4 control-label">Cost Per Item</label>
 
     <div class="col-md-6">
       <input id="price_bought" type="number" step="any" min="0" max="2147483647" class="form-control" name="price_bought" value="" required autofocus>
