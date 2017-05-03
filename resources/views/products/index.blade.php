@@ -29,7 +29,7 @@
 		margin-left: 10px;
 	}
 	.createorder {
-		width: 800px;
+		width: 59%;
 	}
 </style>
 
