@@ -116,8 +116,7 @@
                                 <li><a href="/costs">Sales Report</a></li>
               							@endif
                             <li><a href="/orders">Orders Log</a></li>
-                            <li><a href="/products">Manage Inventory</a></li>
-    							          <li><a href="/orders/create">Place Order</a></li>
+                            <li><a href="/products">Inventory</a></li>
                             @if(Auth::user()->admin)
                             <li><a href="/users">Employees</a></li>
                             @endif

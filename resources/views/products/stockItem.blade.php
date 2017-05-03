@@ -9,7 +9,7 @@
     <label for="quantity" class="col-md-4 control-label">{{ $product->product_name }}</label>
 
     <div class="col-md-6">
-      <input id="quantity" type="number" min="1" max="2147483647" class="form-control quantity" name="quantity" value="1" required>
+      <input id="quantity" type="number" min="1" max="500" class="form-control quantity" name="quantity" value="1" required>
     </div>
   </div>
 

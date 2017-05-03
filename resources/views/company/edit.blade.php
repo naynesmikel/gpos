@@ -70,7 +70,7 @@
   <div class="form-group{{ $errors->has('water_bill') ? ' has-error' : '' }}">
     <label for="water_bill" class="col-md-4 control-label">Water Bill</label>
     <div class="col-md-6">
-      <input id="water_bill" type="number" min="0" max="2147483647" step="any" class="form-control" name="water_bill" value="{{ $company{0}->water_bill }}" required autofocus>
+      <input id="water_bill" type="number" min="0" max="999999" step="any" class="form-control" name="water_bill" value="{{ $company{0}->water_bill }}" required autofocus>
       @if ($errors->has('water_bill'))
         <span class="help-block">
           <strong>{{ $errors->first('water_bill') }}</strong>
@@ -82,7 +82,7 @@
   <div class="form-group{{ $errors->has('electric_bill') ? ' has-error' : '' }}">
     <label for="electric_bill" class="col-md-4 control-label">Electric Bill</label>
     <div class="col-md-6">
-      <input id="electric_bill" type="number" min="0" max="2147483647" step="any" class="form-control" name="electric_bill" value="{{ $company{0}->electric_bill }}" required autofocus>
+      <input id="electric_bill" type="number" min="0" max="999999" step="any" class="form-control" name="electric_bill" value="{{ $company{0}->electric_bill }}" required autofocus>
       @if ($errors->has('electric_bill'))
         <span class="help-block">
             <strong>{{ $errors->first('electric_bill') }}</strong>
@@ -94,7 +94,7 @@
   <div class="form-group{{ $errors->has('rent') ? ' has-error' : '' }}">
     <label for="rent" class="col-md-4 control-label">Rent</label>
     <div class="col-md-6">
-      <input id="rent" type="number" min="0" max="2147483647" step="any" class="form-control" name="rent" value="{{ $company{0}->rent }}" required autofocus>
+      <input id="rent" type="number" min="0" max="999999" step="any" class="form-control" name="rent" value="{{ $company{0}->rent }}" required autofocus>
       @if ($errors->has('rent'))
         <span class="help-block">
           <strong>{{ $errors->first('rent') }}</strong>
@@ -106,7 +106,7 @@
   <div class="form-group{{ $errors->has('labor') ? ' has-error' : '' }}">
     <label for="labor" class="col-md-4 control-label">Labor</label>
     <div class="col-md-6">
-      <input id="labor" type="number" min="0" max="2147483647" step="any" class="form-control" name="labor" value="{{ $company{0}->labor }}" required autofocus>
+      <input id="labor" type="number" min="0" max="999999" step="any" class="form-control" name="labor" value="{{ $company{0}->labor }}" required autofocus>
       @if ($errors->has('labor'))
         <span class="help-block">
           <strong>{{ $errors->first('labor') }}</strong>

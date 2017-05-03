@@ -25,6 +25,12 @@
 		padding: 15px;
 		line-height:30px;
 	}
+	.btn-primary {
+		margin-left: 10px;
+	}
+	.createorder {
+		width: 800px;
+	}
 </style>
 
 <div class="container">
@@ -34,7 +40,8 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					Inventory
-					<button type="button" class="btn btn-primary btn-sm actions pull-right" data-toggle="modal" data-target="#addproduct">Add New Product</button>
+					<button type="button" class="btn btn-primary btn-sm actions pull-right" data-toggle="modal" data-target="#addproduct">Add Product</button>
+					<button type="button" class="btn btn-primary btn-sm actions pull-right" data-toggle="modal" data-target="#createorder">Create Order</button>
 				</div>
 
 				<div class="panel-body">
@@ -172,6 +179,46 @@
 
 					</div>
 				</div>
+
+				<div id="createorder" class="modal fade" role="dialog">
+					<div class="modal-dialog createorder">
+
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+								<h4 class="modal-title">Create Order</h4>
+							</div>
+
+							<div class="modal-body">
+								@include('orders/create')
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div id="myModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" autofocus>
+				  <div class="modal-dialog">
+
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">Create Order</h4>
+				      </div>
+				      <div class="modal-body">
+				        <center>Your customer's order has been saved. Click <i>continue</i> to continue to the <strong>Orders Log</strong>.</center>
+				      </div>
+				      <div class="modal-footer">
+								<a href="/orders" id="continue-link">Continue</a>
+				      </div>
+				    </div>
+
+				  </div>
+				</div>
+
 			</div>
 		</div>
 	</div>

@@ -36,7 +36,7 @@ a {
             Please start by checking your profile. It can be edited by clicking the icon on the upper right corner. Below the profile button is the company profile button. Note, for first time users, that the information in there is temporary so it is highly recommended to change it according to what your company is all about. Same with editing the user's profile, there is also an edit button on the upper right corner to change your company's information.
           </p>
           <p>
-            If you feel you have explored the whole system, please answer this survey below by clicking the icon. This survey will determine how useful GPOS system is.
+            If you feel you have explored the whole system, please answer this survey below by clicking the icon. This survey will determine how useful the GPOS system is.
           </p>
           <hr>
           <center>
@@ -45,7 +45,7 @@ a {
           </center>
           <br>
           <center><small><strong>WARNING! </strong><br>Please make sure that you are using <strong>Google Chrome</strong> as your browser. Some functions may not work in other web browsers.</small></center>
-          
+
         </div>
       </div>
     </div>

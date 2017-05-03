@@ -4,7 +4,7 @@
 	<input id="barcode" type="hidden" name="barcode" value="">
 
 	<div class="form-group{{ $errors->has('product_name') ? ' has-error' : '' }}">
-    <label for="product_name" class="col-md-4 control-label">Product Name</label>
+    <label for="product_name" class="col-md-4 control-label">Item Name</label>
 
     <div class="col-md-6">
       <input id="product_name" type="text" class="form-control" name="product_name" value="{{ old('product_name') }}" required autofocus>
@@ -21,7 +21,7 @@
     <label for="quantity" class="col-md-4 control-label">Quantity</label>
 
     <div class="col-md-6">
-      <input id="quantity" type="number" min="1" max="2147483647" class="form-control" name="quantity" value="" required autofocus>
+      <input id="quantity" type="number" min="1" max="999999" class="form-control" name="quantity" value="" required autofocus>
 
       @if ($errors->has('quantity'))
         <span class="help-block">
@@ -46,10 +46,10 @@
 	</div>
 
 	<div class="form-group{{ $errors->has('price_bought') ? ' has-error' : '' }}">
-    <label for="price_bought" class="col-md-4 control-label">Cost Per Item</label>
+    <label for="price_bought" class="col-md-4 control-label">Price of Purchased Item</label>
 
     <div class="col-md-6">
-      <input id="price_bought" type="number" step="any" min="0" max="2147483647" class="form-control" name="price_bought" value="" required autofocus>
+      <input id="price_bought" type="number" step="any" min="0" max="999999" class="form-control" name="price_bought" value="" required autofocus>
 
       @if ($errors->has('price_bought'))
         <span class="help-block">
@@ -63,7 +63,7 @@
     <label for="selling_price" class="col-md-4 control-label">Selling Price</label>
 
     <div class="col-md-6">
-      <input id="selling_price" type="number" step="any" min="0" max="2147483647" class="form-control" name="selling_price" value="" required autofocus>
+      <input id="selling_price" type="number" step="any" min="0" max="999999" class="form-control" name="selling_price" value="" required autofocus>
 
       @if ($errors->has('selling_price'))
         <span class="help-block">
