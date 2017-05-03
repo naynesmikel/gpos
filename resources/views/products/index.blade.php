@@ -54,8 +54,8 @@
 								<tr>
 								<th><a href={{$productlink}} class="actions">Product Name</a></th>
 								<th><a href={{$quantitylink}} class="actions">Quantity</a></th>
-								<th><a href={{$priceboughtlink}} class="actions">Cost</a></th>
-								<th><a href={{$sellingpricelink}} class="actions">Price</a></th>
+								<th><a href={{$priceboughtlink}} class="actions">Price Bought</a></th>
+								<th><a href={{$sellingpricelink}} class="actions">Selling Price</a></th>
 								<th><a href={{$supplierlink}} class="actions">Supplier</a></th>
 								<th><a href={{$dateboughtlink}} class="actions">Date Bought</a></th>
 								<th>Action</th>

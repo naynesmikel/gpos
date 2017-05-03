@@ -19,7 +19,7 @@
 								<tr>
 									<th><a href={{$productlink}} class="actions">Product Name</a></th>
 									<th><a href={{$quantitylink}} class="actions">Quantity</a></th>
-									<th><a href={{$sellingpricelink}} class="actions">Price</a></th>
+									<th><a href={{$sellingpricelink}} class="actions">Selling Price</a></th>
 									<th><a href={{$subtotallink}} class="actions">Sub Total</a></th>
 									<th><a href={{$discountlink}} class="actions">Discount (%)</a></th>
 									<th><a href={{$totalamountlink}} class="actions">Total Amount</a></th>

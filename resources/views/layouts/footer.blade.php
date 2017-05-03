@@ -1,3 +1,10 @@
-<p>&copy; {{ date('Y') }} GPOS
-  
-</p>
+<style>
+  footer {
+     height:30px;
+     margin-left: 50px;
+  }
+</style>
+
+<footer class="footer">
+  &copy; {{ date('Y') }} GPOS
+</footer>

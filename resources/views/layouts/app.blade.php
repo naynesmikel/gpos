@@ -31,13 +31,14 @@
 
 </head>
 <style>
-    footer {
-       left:0px;
-       bottom:0px;
-       height:30px;
-       width:80%;
-       margin-left: 50px;
+    html,body {
+      width: 100%;
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+      overflow-x: hidden; 
     }
+
     .navbar {
       background-color: #009587;
     }
@@ -153,9 +154,9 @@
 
 		@yield('content')
     </div>
-    <footer class="footer" style="top:0;">
+
       @include('layouts/footer')
-    </footer>
+
     <!-- Scripts -->
     <script src="/js/app.js"></script>
     <script>
