@@ -276,7 +276,6 @@
 	    }else{
 					$('#submit').attr("data-toggle", "modal");
 					$('#submit').attr("data-target", "#myModal");
-					$('#createorder').modal('toggle');
 			}
 		});
 		$(document).keypress(function(event) {
@@ -341,74 +340,76 @@
 		</div>
 
 		<div class="panel-body">
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Product Name</th>
-						<th>Quantity</th>
-						<th>Selling Price</th>
-						<th>Sub Total</th>
-						<th>Discount (%)</th>
-						<th>Total Amount</th>
-						<th>Action</th>
-					</tr>
-				</thead>
+			<div class="table-responsive">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>Product Name</th>
+							<th>Quantity</th>
+							<th>Selling Price</th>
+							<th>Sub Total</th>
+							<th>Discount (%)</th>
+							<th>Total Amount</th>
+							<th>Action</th>
+						</tr>
+					</thead>
 
-				<tbody id="place_order">
+					<tbody id="place_order">
 
-					<tr>
-						<input type="hidden" name="product_id[]" class="product_id" value="">
+						<tr>
+							<input type="hidden" name="product_id[]" class="product_id" value="">
 
-						<td class="col-md-3">
-							<select class="form-control product_name" id="product_name" name="product_name[]" required>
-								<option value="select product">select product</option>
-								@forelse($products as $product)
-								<option data-id="{{ $product->id }}" data-price="{{ $product->selling_price }}" data-qty="{{ $product->quantity }}" data-pricebought="{{ $product->price_bought }}">{{ $product->product_name }}</option>
-								@empty
-								<option value='----'>----</option>
-								@endforelse
-							</select>
-						</td>
+							<td class="col-md-3">
+								<select class="form-control product_name" id="product_name" name="product_name[]" required>
+									<option value="select product">select product</option>
+									@forelse($products as $product)
+									<option data-id="{{ $product->id }}" data-price="{{ $product->selling_price }}" data-qty="{{ $product->quantity }}" data-pricebought="{{ $product->price_bought }}">{{ $product->product_name }}</option>
+									@empty
+									<option value='----'>----</option>
+									@endforelse
+								</select>
+							</td>
 
-						<td class="col-md-1">
-							<input id="quantity" type="number" min="1" max="999999" class="form-control quantity" name="quantity[]" required readonly>
-						</td>
+							<td class="col-md-1">
+								<input id="quantity" type="number" min="1" max="999999" class="form-control quantity" name="quantity[]" required readonly>
+							</td>
 
-						<td class="col-md-2">
-							<input id="selling_price" type="number" class="form-control selling_price" name="selling_price[]" required readonly>
-						</td>
+							<td class="col-md-2">
+								<input id="selling_price" type="number" class="form-control selling_price" name="selling_price[]" required readonly>
+							</td>
 
-						<td class="col-md-2">
-							<input id="subtotal" type="number" class="form-control subtotal" name="subtotal[]" required readonly>
-						</td>
+							<td class="col-md-2">
+								<input id="subtotal" type="number" class="form-control subtotal" name="subtotal[]" required readonly>
+							</td>
 
-						<td class="col-md-1">
-							<input id="discount" type="number" min="0" max="100" class="form-control discount" name="discount[]" required readonly>
-						</td>
+							<td class="col-md-1">
+								<input id="discount" type="number" min="0" max="100" class="form-control discount" name="discount[]" required readonly>
+							</td>
 
-						<td class="col-md-2">
-							<input id="total_amount" type="text" class="form-control total_amount" name="total_amount[]" required readonly>
-						</td>
+							<td class="col-md-2">
+								<input id="total_amount" type="text" class="form-control total_amount" name="total_amount[]" required readonly>
+							</td>
 
-						<input type="hidden" name="date_sold[]" value="{{ date('Y-m-d H:i:s') }}">
-						<input type="hidden" class="price_bought" name="price_bought[]" value="">
+							<input type="hidden" name="date_sold[]" value="{{ date('Y-m-d H:i:s') }}">
+							<input type="hidden" class="price_bought" name="price_bought[]" value="">
 
-						<td class="col-md-1">
-							<small><input type="button" class="btn btn-danger btn-sm delete" value="delete"></small>
-						</td>
-					</tr>
+							<td class="col-md-1">
+								<small><input type="button" class="btn btn-danger btn-sm delete" value="delete"></small>
+							</td>
+						</tr>
 
-				</tbody>
+					</tbody>
 
-				<tfoot>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th></th>
-					<th colspan="6">Total: <b class="total">0</b></th>
-				</tfoot>
-			</table>
+					<tfoot>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th colspan="6">Total: <b class="total">0</b></th>
+					</tfoot>
+				</table>
+			</div>
 		</div>
 	</div>
 

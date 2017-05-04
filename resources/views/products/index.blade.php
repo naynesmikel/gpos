@@ -28,9 +28,6 @@
 	.btn-primary {
 		margin-left: 10px;
 	}
-	.createorder {
-		width: 59%;
-	}
 </style>
 
 <div class="container">
@@ -181,7 +178,7 @@
 				</div>
 
 				<div id="createorder" class="modal fade" role="dialog">
-					<div class="modal-dialog createorder">
+					<div class="modal-dialog modal-lg">
 
 						<div class="modal-content">
 							<div class="modal-header">

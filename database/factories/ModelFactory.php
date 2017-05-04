@@ -12,32 +12,32 @@
 */
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
-	static $admin, $name, $username, $password;
+	static $admin, $name, $username, $contact_number, $birthday, $email, $password;
     return [
         'remember_token' => str_random(10),
 				'admin' => 1,
 				'name' => 'Administrator',
 				'username' => 'admin',
-				'contact_number' => $faker->e164PhoneNumber,
-				'birthday' => $faker->date($format = 'Y-m-d', $max = 'now'),
-				'email' => $faker->safeEmail,
+				'contact_number' => '09739842734',
+				'birthday' => date('Y-m-d H:i:s'),
+				'email' => 'changemy@email.com',
 				'password' => 'gposadmin',
     ];
 });
 
 $factory->define(App\Company::class, function (Faker\Generator $faker) {
-		static $tax;
+		static $company_name, $company_slogan, $location, $company_contact_number, $company_email, $tax, $water_bill, $electric_bill, $rent, $labor;
     return [
-				'company_name' => $faker->company,
-				'company_slogan'=> $faker->sentence($nbWords = 12, $variableNbWords = true),
-				'location' => $faker->address,
-				'company_contact_number' => $faker->phoneNumber,
-				'company_email' => $faker->email,
+				'company_name' => 'Zulauf, Donnelly and Zulauf',
+				'company_slogan'=> 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vitae congue orci. Suspendisse eget lacinia massa, a cursus massa. Ut eget nisl at lectus tincidunt pharetra sed a nisl.',
+				'location' => '91142 Abshire Plain New Anabelle, NH 51970',
+				'company_contact_number' => '652.787.3526 x01563',
+				'company_email' => 'mozell96@dicki.com',
 				'tax' => 12,
-				'water_bill' => $faker->randomFloat($nbMaxDecimals = 2, $min = 250, $max = 500),
-				'electric_bill' => $faker->randomFloat($nbMaxDecimals = 2, $min = 250, $max = 500),
-				'rent' => $faker->randomFloat($nbMaxDecimals = 2, $min = 1000, $max = 1500),
-				'labor' => $faker->randomFloat($nbMaxDecimals = 2, $min = 250, $max = 500),
+				'water_bill' => 455.66,
+				'electric_bill' => 499.55,
+				'rent' => 1082.03,
+				'labor' => 358.17,
     ];
 });
 

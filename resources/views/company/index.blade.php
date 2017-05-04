@@ -11,11 +11,6 @@
 		});
 	});
 </script>
-<style>
-	.modal-dialog{
-		width: 59%;
-	}
-</style>
 
 <div class="container">
 	@include('flash::message')
@@ -89,7 +84,7 @@
 				</div>
 
 				<div id="editcompany" class="modal fade" role="dialog">
-					<div class="modal-dialog">
+					<div class="modal-dialog modal-lg">
 
 						<div class="modal-content">
 							<div class="modal-header">
