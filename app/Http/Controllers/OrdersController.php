@@ -85,7 +85,7 @@ class OrdersController extends Controller
     		}
 
     		$pdf = PDF::loadView('orders.generateReceipt', compact(['input', 'total', 'user', 'company']));
-    		return $pdf->stream(date('Y-m-d H:i:s').'_'.$cust_name.'.pdf');
+    		return $pdf->download(date('Y-m-d H:i:s').'_'.$cust_name.'.pdf');
     }
 
     public function byproductname()
