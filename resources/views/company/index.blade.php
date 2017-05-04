@@ -1,6 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
+<script>
+	$(document).ready(function(){
+		$(document.body).on('hide.bs.modal', function () {
+    	$('body').css('padding-right','0');
+		});
+		$(document.body).on('hidden.bs.modal', function () {
+		  $('body').css('padding-right','0');
+		});
+	});
+</script>
 <style>
 	.modal-dialog{
 		width: 59%;
