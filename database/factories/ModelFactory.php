@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\User::class, function (Faker\Generator $faker) {
+$factory->define(App\User::class, function () {
 	static $admin, $name, $username, $contact_number, $birthday, $email, $password;
     return [
         'remember_token' => str_random(10),
@@ -25,7 +25,7 @@ $factory->define(App\User::class, function (Faker\Generator $faker) {
     ];
 });
 
-$factory->define(App\Company::class, function (Faker\Generator $faker) {
+$factory->define(App\Company::class, function () {
 		static $company_name, $company_slogan, $location, $company_contact_number, $company_email, $tax, $water_bill, $electric_bill, $rent, $labor;
     return [
 				'company_name' => 'Zulauf, Donnelly and Zulauf',
