@@ -70,21 +70,21 @@
 										<td>{{$product->date_bought->toFormattedDateString()}}</td>
 										<td>
 											@if(Auth::user()->admin)
-											<button type="button" class="btn btn-default btn-sm actions" data-toggle="modal" data-target="#edit{{$product->id}}">edit</button>
+											<button type="button" class="btn btn-default btn-sm pull-left actions" data-toggle="modal" data-target="#edit{{$product->id}}">edit</button>
 											@endif
 
 											@if(Auth::user()->admin)
-											<button type="button" class="btn btn-success btn-sm actions" data-toggle="modal" data-target="#{{$product->id}}" style="margin-left: 20px;">stock item</button>
+											<button type="button" class="btn btn-success btn-sm pull-left actions" data-toggle="modal" data-target="#{{$product->id}}" style="margin-left: 20px;">stock item</button>
 											@else
-											<button type="button" class="btn btn-success btn-sm actions" data-toggle="modal" data-target="#{{$product->id}}">stock item</button>
+											<button type="button" class="btn btn-success btn-sm pull-left actions" data-toggle="modal" data-target="#{{$product->id}}">stock item</button>
 											@endif
 
 											@if(Auth::user()->admin)
-											<form action="/products/{{ $product->id }}" method="POST" class="pull-right actions">
+											<form action="/products/{{ $product->id }}" method="POST" class="pull-left actions">
 												{{ csrf_field() }}
 
 												{{ method_field('DELETE') }}
-												<small><button class="btn btn-danger btn-sm actions delbtn">delete</button></small>
+												<small><button class="btn btn-danger btn-sm actions delbtn" style="margin-left: 20px;">delete</button></small>
 											</form>
 											@endif
 										</td>
