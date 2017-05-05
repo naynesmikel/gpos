@@ -66,7 +66,8 @@
 				@else
 				<div class="panel-body">
 					<div class="panel-body">
-						<center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+						<center>
+							<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 							<br>
 							You have no employees.
 						</center>

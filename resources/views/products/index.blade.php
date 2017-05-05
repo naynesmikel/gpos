@@ -70,7 +70,6 @@
 										<td>{{$product->date_bought->toFormattedDateString()}}</td>
 										<td>
 											@if(Auth::user()->admin)
-											<!--a href="/products/{{$product->id}}/edit" class="btn btn-default btn-sm actions">edit</a-->
 											<button type="button" class="btn btn-default btn-sm actions" data-toggle="modal" data-target="#edit{{$product->id}}">edit</button>
 											@endif
 
@@ -89,7 +88,6 @@
 											</form>
 											@endif
 										</td>
-
 									</tr>
 								@endforeach
 							</tbody>
@@ -149,7 +147,8 @@
 
 				@else
 					<div class="panel-body">
-						<center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+						<center>
+							<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 							<br>
 							You have not bought any items yet.
 						</center>

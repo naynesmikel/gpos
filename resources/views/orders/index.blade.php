@@ -2,6 +2,18 @@
 @extends('layouts.app')
 
 @section('content')
+<script>
+	$(document).ready(function(){
+		$(".delbtn").click(function(){
+			if(confirm("Are you sure you want to delete this?")){
+				$(".delbtn").attr("href", "query.php?ACTION=delete&ID='1'");
+			}else{
+				return false;
+			}
+		});
+	});
+</script>
+
 <div class="container">
 	@include('flash::message')
 	<div class="row">
@@ -26,6 +38,9 @@
 									<th><a href={{$totalamountlink}} class="actions">Total Amount</a></th>
 									<th><a href={{$datesoldlink}} class="actions">Sold on</a></th>
 									<th><a href={{$soldbylink}} class="actions">Sold by</a></th>
+									@if(Auth::user()->admin)
+									<th>Action</th>
+									@endif
 								</tr>
 							</thead>
 							<tbody>
@@ -39,6 +54,16 @@
 										<td>{{$order->total_amount}}</td>
 										<td>{{$order->date_sold}}</td>
 										<td>{{$order->name}}</td>
+										@if(Auth::user()->admin)
+										<td>
+											<form action="/orders/{{ $order->id }}" method="POST" class="pull-right actions">
+												{{ csrf_field() }}
+
+												{{ method_field('DELETE') }}
+												<small><button class="btn btn-danger btn-sm actions delbtn">delete</button></small>
+											</form>
+										</td>
+										@endif
 									</tr>
 								@endforeach
 							</tbody>
@@ -53,7 +78,8 @@
 				</div>
 				@else
 				<div class="panel-body">
-					<center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+					<center>
+						<span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
 						<br>
 						You have not made any sales yet.
 					</center>

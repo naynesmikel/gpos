@@ -34,7 +34,7 @@
 			tr += "</select>";
 			tr += "</td>";
 			tr += "<td class='col-md-1'>";
-			tr += "<input id='quantity' type='number' min='1' max='999999' class='form-control quantity' name='quantity[]' required readonly>";
+			tr += "<input id='quantity' type='number' min='1' max='99999' class='form-control quantity' name='quantity[]' required readonly>";
 			tr += "</td>";
 			tr += "<td class='col-md-2'>";
 			tr += "<input id='selling_price' type='text' class='form-control selling_price' name='selling_price[]' required readonly>";
@@ -309,7 +309,7 @@
 
 	<input type="hidden" name="user_id" value="{{ Auth::user()->name }}">
 		<p style="padding-left: 20px; padding-right: 20px; text-align: center;">
-			<small style="color: gray;"><strong>Quick Tip!</strong> When you are done with your orders, the system will automatically generate a receipt that you can print out. The order will be also saved in the <strong>Orders Log</strong> and the <strong>Inventory</strong> will update itself. Just click <b>Continue</b> on the pop-up window that will appear to got to the Orders Log.</small>
+			<small style="color: gray;"><strong>Quick Tip!</strong> When you are done with your orders, the system will automatically generate a receipt that you can print out. The order will be also saved in the <strong>Orders Log</strong> and the Inventory will update itself. Just click <b>Continue</b> on the pop-up window that will appear to go back the <strong>Inventory</strong>.</small>
 		</p>
 	<table class="table">
 		<thead>
@@ -380,7 +380,7 @@
 							</td>
 
 							<td class="col-md-1">
-								<input id="quantity" type="number" min="1" max="999999" class="form-control quantity" name="quantity[]" required readonly>
+								<input id="quantity" type="number" min="1" max="99999" class="form-control quantity" name="quantity[]" required readonly>
 							</td>
 
 							<td class="col-md-2">
@@ -427,7 +427,7 @@
     <label for="cash_in" class="col-md-4 control-label">Cash</label>
 
     <div class="col-md-4">
-      <input id="cash_in" type="number" min="0" class="form-control" name="cash_in" value="" required autofocus>
+      <input id="cash_in" type="number" min="0" class="form-control" name="cash_in" value="0" required autofocus>
 
       @if ($errors->has('cash_in'))
       <span class="help-block">

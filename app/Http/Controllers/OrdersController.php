@@ -86,7 +86,7 @@ class OrdersController extends Controller
     		}
 
         $pdf = PDF::loadView('orders.generateReceipt', compact(['input', 'total', 'user', 'company']));
-        
+
         return $pdf->download(date('Y-m-d H:i:s').'_'.$cust_name.'.pdf');
     }
 
@@ -373,6 +373,15 @@ class OrdersController extends Controller
      */
     public function destroy($id)
     {
-        //
+      $order = Order::findOrFail($id);
+      $product_name = $order->product_name;
+      $quantity = $order->quantity;
+      $date = $order->date_sold;
+
+      $order->delete();
+
+      flash($quantity . ' ' . strtoupper($product_name) . ' that has been sold on ' . $date . ' is now removed from the database!', 'success');
+
+      return redirect('/orders');
     }
 }

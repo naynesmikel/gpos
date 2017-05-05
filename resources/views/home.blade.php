@@ -36,7 +36,7 @@ a {
             Please start by checking your profile. It can be edited by clicking the icon on the upper right corner. Below the profile button is the company profile button. Note, for first time users, that the information in there is temporary so it is highly recommended to change it according to what your company is all about. Same with editing the user's profile, there is also an edit button on the upper right corner to change your company's information.
           </p>
           <p>
-            If you feel you have explored the whole system, please answer this survey below by clicking the icon. This survey will determine how useful the GPOS system is.
+            If you feel you have explored the whole system, please answer the survey below by clicking the icon. This survey will determine how useful the GPOS system is.
           </p>
           <hr>
           <center>
@@ -44,7 +44,7 @@ a {
             <h6 style="text-align: center;">System Usability Test</h6>
           </center>
           <br>
-          <center><small><strong>WARNING! </strong><br>Please make sure that you are using <strong>Google Chrome</strong> as your browser. Some functions may not work in other web browsers.</small></center>
+          <center><small><strong>WARNING!</strong><br>Please make sure that you are using <strong>Google Chrome</strong> as your browser. Some functions may not work in other web browsers.</small></center>
 
         </div>
       </div>
@@ -65,7 +65,7 @@ a {
             @endif
             <li><strong>Inventory</strong></li>
             <p>
-              This page helps you monitor and manage your inventory. This is also where you can save all your transactions when you sell products. After saving, a receipt will be genarated and will be automatically download into your devce.
+              This page helps you monitor and manage your inventory. This is also where you can save all your transactions when you sell products. After saving, a receipt will be genarated and will be automatically download into your device.
             </p>
             <li><strong>Orders Log</strong></li>
             <p>

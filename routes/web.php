@@ -39,6 +39,8 @@ Route::group(['middleware' => ['authenticated', 'admin']], function(){
 	Route::post('products/createBarcode', ['uses' => 'ProductsController@generateBarcodePDF']);
 
 	Route::resource('costs', 'CostsController', ['only' => ['index', 'update']]);
+
+	Route::resource('orders', 'OrdersController', ['only' => 'destroy']);
 });
 
 Route::group(['middleware' => 'authenticated'], function(){
