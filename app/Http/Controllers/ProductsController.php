@@ -41,7 +41,7 @@ class ProductsController extends Controller
 
       if(DB::table('products')->where('product_name', $request->product_name)->count() > 0){
         flash(strtoupper($request->product_name) . ' already exists in your database', 'danger');
-        return redirect('/products/create');
+        return redirect('/products');
       }
 
       $product->barcode = $barstring;

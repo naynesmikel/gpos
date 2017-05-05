@@ -206,10 +206,10 @@
 				        <h4 class="modal-title">Create Order</h4>
 				      </div>
 				      <div class="modal-body">
-				        <center>Your customer's order has been saved. Click <i>continue</i> to continue to the <strong>Orders Log</strong>.</center>
+				        <center>Your customer's order has been saved. Click <i>continue</i> to return to the <strong>Inventory</strong>.</center>
 				      </div>
 				      <div class="modal-footer">
-								<a href="/orders" id="continue-link">Continue</a>
+								<a href="/products" id="continue-link">Continue</a>
 				      </div>
 				    </div>
 

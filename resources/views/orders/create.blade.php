@@ -9,11 +9,16 @@
 		$('.total').html(t.toFixed(2));
 
 		$('#cash_out').val((($('#cash_in').val()-0) - t).toFixed(2));
+		if($('#cash_out').val() < 0){
+			$('#cash_out').css('border-color', 'red');
+		}else{
+			$('#cash_out').css('border-color', '');
+		}
 	}
 
 	$(document).ready(function(){
 		var selecteditems;
-		$("#add").click(function () {
+		$(".add_item").click(function () {
 			selecteditems = [];
 
 			var tr = "<tr>";
@@ -254,14 +259,19 @@
 			var emptyProducts = $(".product_name option:selected[value='select product']").length;
 			var emptyDash = $(".product_name option:selected[value='----']").length;
 
+			if($('#cash_out').val() >= 0){
+				$('#cash_out').css('border-color', '');
+			}
+
 			if($('#cash_out').val()-0 < 0){
 				$("#submit").attr("disabled", true);
-				alert("Cash tendered is less than the total price of the order/s.");
+				$('#cash_out').css('border-color', 'red');
 			}else if(emptyProducts > 0 || emptyDash > 0){
 				$("#submit").attr("disabled", true);
 				alert("Please select a product on each row or delete them.");
-			}else
+			}else{
 				$("#submit").removeAttr("disabled");
+			}
 
 			totalAmount();
 		});
@@ -299,9 +309,9 @@
 	{{ csrf_field() }}
 
 	<input type="hidden" name="user_id" value="{{ Auth::user()->name }}">
-	<p style="padding-left: 20px; padding-right: 20px;">
-		<small style="color: gray;"><strong>Quick Tip!</strong> When you are done with your orders, the system will automatically generate a receipt that you can print out. The order will be also saved in the <b>Orders Log</b>. Just click <b>Continue</b> on the pop-up window that will appear to create another order.</small>
-	</p>
+		<p style="padding-left: 20px; padding-right: 20px; text-align: center;">
+			<small style="color: gray;"><strong>Quick Tip!</strong> When you are done with your orders, the system will automatically generate a receipt that you can print out. The order will be also saved in the <strong>Orders Log</strong> and the <strong>Inventory</strong> will update itself. Just click <b>Continue</b> on the pop-up window that will appear to got to the Orders Log.</small>
+		</p>
 	<table class="table">
 		<thead>
 			<th>
@@ -336,7 +346,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			Order Details
-			<button id="add" type="button" class="btn btn-primary btn-sm actions pull-right">Add Item</button>
+			<button type="button" class="btn btn-primary btn-sm actions pull-right add_item">Add Item</button>
 		</div>
 
 		<div class="panel-body">
@@ -409,6 +419,7 @@
 						<th colspan="6">Total: <b class="total">0</b></th>
 					</tfoot>
 				</table>
+				<button type="button" class="btn btn-primary btn-sm actions add_item">Add Item</button>
 			</div>
 		</div>
 	</div>

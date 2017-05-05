@@ -36,7 +36,7 @@
       height: 100%;
       margin: 0px;
       padding: 0px;
-      overflow-x: hidden; 
+      overflow-x: hidden;
     }
 
     .navbar {
@@ -110,7 +110,7 @@
                         <!-- Authentication Links -->
                         @if (Auth::guest())
                             <li><a href="{{ url('/login') }}">Login</a></li>
-                            <li><a href="{{ url('/register') }}">Register</a></li>
+                            <li><a href="{{ url('/register') }}">Register Employee</a></li>
                         @else
 
               							@if(Auth::user()->admin)

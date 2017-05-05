@@ -26,7 +26,7 @@ body:before {
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">
-                <div class="panel-heading">Register</div>
+                <div class="panel-heading">Register Employee</div>
                 <div class="panel-body">
                   <center><small style="color: red;">Please only use <strong>Google Chrome</strong> as your browser.</small></center>
                   <br>

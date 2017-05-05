@@ -11,6 +11,7 @@ use PDF;
 use DB;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Input;
+use File;
 
 class OrdersController extends Controller
 {
@@ -84,8 +85,9 @@ class OrdersController extends Controller
             }
     		}
 
-    		$pdf = PDF::loadView('orders.generateReceipt', compact(['input', 'total', 'user', 'company']));
-    		return $pdf->download(date('Y-m-d H:i:s').'_'.$cust_name.'.pdf');
+        $pdf = PDF::loadView('orders.generateReceipt', compact(['input', 'total', 'user', 'company']));
+        
+        return $pdf->download(date('Y-m-d H:i:s').'_'.$cust_name.'.pdf');
     }
 
     public function byproductname()

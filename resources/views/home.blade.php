@@ -57,22 +57,26 @@ a {
         </div>
         <div class="panel-body">
           <ul>
-            <li><strong>Manage Inventory</strong></li>
+            @if(Auth::user()->admin)
+            <li><strong>Employees</strong></li>
             <p>
-              This function helps you monitor and manage your inventory.
+              In this page, a table of employees will be shown with all their information that they provided. Also, you can delete accounts of employees here.
+            </p>
+            @endif
+            <li><strong>Inventory</strong></li>
+            <p>
+              This page helps you monitor and manage your inventory. This is also where you can save all your transactions when you sell products. After saving, a receipt will be genarated and will be automatically download into your devce.
             </p>
             <li><strong>Orders Log</strong></li>
             <p>
               Orders Log displays all orders that have been made in your business. It is automatically organized from the most recent to the oldest order made.
             </p>
+            @if(Auth::user()->admin)
             <li><strong>Sales Report</strong></li>
             <p>
               This is where all the information about your business becomes meaningful. It arranges all the data in days, weeks, months, and years so that you can easily monitor the performance of the business.
             </p>
-            <li><strong>Place Order</strong></li>
-            <p>
-              Place Order is a function where you can input the orders that customers make. This will generate a receipt after the order is complete and it will be automatically saved in the Orders Log.
-            </p>
+            @endif
           </ul>
         </div>
       </div>
