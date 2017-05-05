@@ -73,7 +73,7 @@
 			var emptyProducts = $(".product_name option:selected[value='select product']").length;
 			var emptyDash = $(".product_name option:selected[value='----']").length;
 
-			if($('#cash_out').val()-0 < 0 || emptyProducts > 0 || emptyDash > 0){
+			if(emptyProducts > 0 || emptyDash > 0){
 				$("#submit").attr("disabled", true);
 			}else
 				$("#submit").removeAttr("disabled");
@@ -120,7 +120,7 @@
 				var emptyProducts = $(".product_name option:selected[value='select product']").length;
 				var emptyDash = $(".product_name option:selected[value='----']").length;
 
-				if($('#cash_out').val()-0 > 0 && emptyProducts == 0 && emptyDash == 0){
+				if(emptyProducts == 0 && emptyDash == 0){
 					$("#submit").removeAttr("disabled");
 				}
 
@@ -213,7 +213,7 @@
 				var emptyProducts = $(".product_name option:selected[value='select product']").length;
 				var emptyDash = $(".product_name option:selected[value='----']").length;
 
-				if($('#cash_out').val()-0 > 0 && emptyProducts == 0 && emptyDash == 0){
+				if(emptyProducts == 0 && emptyDash == 0){
 					$("#submit").removeAttr("disabled");
 				}
 			}
@@ -264,7 +264,6 @@
 			}
 
 			if($('#cash_out').val()-0 < 0){
-				$("#submit").attr("disabled", true);
 				$('#cash_out').css('border-color', 'red');
 			}else if(emptyProducts > 0 || emptyDash > 0){
 				$("#submit").attr("disabled", true);
