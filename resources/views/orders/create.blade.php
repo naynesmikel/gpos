@@ -275,11 +275,11 @@
 			totalAmount();
 		});
 		$('#submit').mousedown(function() {
-	    var emptyProducts = $(this).parent().find($('select')).filter(function() { return $(this).val() == ""; });
-			var emptyCash = $(this).parent().find('input[type="number"]').filter(function() { return $(this).val() == ""; });
+	    var emptyProducts = $(".product_name option:selected[value='select product']").length;
+			//var emptyCash = $(this).parent().find('input[type="number"]').filter(function() { return $(this).val() == ""; });
 			var emptyDash = $(".product_name option:selected[value='----']").length;
 
-	    if (emptyProducts.length || emptyCash.length) {
+	    if (emptyProducts > 0 || emptyDash > 0) {
 					$("#submit").removeAttr("data-toggle");
 					$("#submit").removeAttr("data-target");
 	    }else{
